@@ -14,7 +14,11 @@ import java.util.stream.Stream;
 
 @Repository
 public interface GearRepo extends JpaRepository<Gear, String> {
+    boolean existsByBrandIgnoreCaseAndModelIgnoreCase(String brand, String model);
+
     Optional<Gear> findGearById(@NotNull UUID id);
+
+    Stream<Gear> findGearByCategory(Gear.Category category);
 
     @Query("""
         SELECT g FROM Gear g
@@ -32,6 +36,5 @@ public interface GearRepo extends JpaRepository<Gear, String> {
     """)
     Stream<Gear> streamLive(@Param("query") String query);
 
-    boolean existsByBrandIgnoreCaseAndModelIgnoreCase(String brand, String model);
 
 }

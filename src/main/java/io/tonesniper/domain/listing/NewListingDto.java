@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.listing;
+package io.tonesniper.domain.listing;
 
 import jakarta.validation.constraints.NotNull;
 

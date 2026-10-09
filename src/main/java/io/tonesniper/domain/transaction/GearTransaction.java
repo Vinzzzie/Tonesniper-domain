@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.listing;
+package io.tonesniper.domain.transaction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,8 +23,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "gear_listings")
-public class GearListing {
+@Table(name = "gear_transactions")
+public class GearTransaction {
     @Id
     @NotNull
     @Column(name = "id", nullable = false)
@@ -33,21 +33,32 @@ public class GearListing {
 
     @NotNull
     @Column(name = "gear_id", nullable = false)
-    private UUID gear;
-
-    @Size(max = 200)
-    @NotNull
-    @Column(name = "title", nullable = false, length = 200)
-    private String title;
+    private UUID gearId;
 
     @NotNull
-    @Column(name = "ask_price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal askPrice;
+    @Column(name = "seller_id", nullable = false)
+    private UUID sellerId;
 
+    @NotNull
+    @Column(name = "gear_listing_id", nullable = false)
+    private UUID gearListingId;
+
+    @NotNull
+    @Column(name = "buyer_id", nullable = false)
+    private UUID buyerId;
+
+    @Column(name = "gear_alert_id")
+    private UUID gearAlertId;
+
+    @NotNull
+    @Column(name = "agreed_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal agreedPrice;
+
+    @Size(max = 20)
     @NotNull
     @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(name = "status", nullable = false, length = 20)
-    private ListingStatus status;
+    private TransactionStatus status;
 
     @NotNull
     @Column(name = "created_by", nullable = false)
@@ -67,14 +78,19 @@ public class GearListing {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    GearListing(UUID id, UUID gear, String title,
-                BigDecimal askPrice, ListingStatus status,
-                UUID createdBy, OffsetDateTime createdAt,
-                UUID updatedBy, OffsetDateTime updatedAt) {
+    GearTransaction(UUID id, UUID gearId,
+                    UUID sellerId, UUID gearListingId,
+                    UUID buyerId, UUID gearAlertId,
+                    BigDecimal agreedPrice, TransactionStatus status,
+                    UUID createdBy, OffsetDateTime createdAt,
+                    UUID updatedBy, OffsetDateTime updatedAt) {
         this.id = id;
-        this.gear = gear;
-        this.title = title;
-        this.askPrice = askPrice;
+        this.gearId = gearId;
+        this.sellerId = sellerId;
+        this.gearListingId = gearListingId;
+        this.buyerId = buyerId;
+        this.gearAlertId = gearAlertId;
+        this.agreedPrice = agreedPrice;
         this.status = status;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
@@ -82,14 +98,22 @@ public class GearListing {
         this.updatedAt = updatedAt;
     }
 
-    void update(UpdateListingDto updateListingDto) {
-        if (updateListingDto.title() != null) setTitle(updateListingDto.title());
-        if (updateListingDto.askPrice() != null)  setAskPrice(updateListingDto.askPrice());
-        if (updateListingDto.status() != null) setStatus(updateListingDto.status());
+    GearTransaction update(UpdateTransactionDto dto) {
+        if (dto.status()!=getStatus()) setStatus(dto.status());
+        return this;
     }
 
-    enum ListingStatus {
-        ACTIVE, RESERVED, SOLD, CANCELLED
+    void by(String userId) {
+        setUpdatedBy(UUID.fromString(userId));
+        setUpdatedAt(OffsetDateTime.now());
+    }
+
+    enum TransactionStatus {
+        INITIATED, PAYED, SENT, ARRIVED
+    }
+
+    enum USERTYPE {
+        BUYER, SELLER, ALL
     }
 
 }

@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.alert;
+package io.tonesniper.domain.alert;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;

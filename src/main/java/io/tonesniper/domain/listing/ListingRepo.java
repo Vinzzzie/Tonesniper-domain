@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.listing;
+package io.tonesniper.domain.listing;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface ListingRepo extends JpaRepository<GearListing, UUID> {
     @Query("""
-        SELECT new io.tonesniper.domain.gear.listing.GearListingDto(
+        SELECT new io.tonesniper.domain.listing.GearListingDto(
             gl.id, g, gl.title, gl.askPrice, gl.status)
         FROM GearListing gl JOIN Gear g ON gl.gear = g.id
         WHERE gl.createdBy = :createdBy""")

@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.transaction;
+package io.tonesniper.domain.transaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.listing;
+package io.tonesniper.domain.listing;
 
 import io.tonesniper.domain.gear.Gear;
 import io.tonesniper.domain.gear.GearDto;

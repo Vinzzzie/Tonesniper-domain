@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.transaction;
+package io.tonesniper.domain.alert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,10 +23,9 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "gear_transactions")
-public class GearTransaction {
+@Table(name = "gear_alerts")
+public class GearAlert {
     @Id
-    @NotNull
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -35,30 +34,23 @@ public class GearTransaction {
     @Column(name = "gear_id", nullable = false)
     private UUID gearId;
 
+    @Size(max = 150)
     @NotNull
-    @Column(name = "seller_id", nullable = false)
-    private UUID sellerId;
+    @Column(name = "title", nullable = false, length = 150)
+    private String title;
 
-    @NotNull
-    @Column(name = "gear_listing_id", nullable = false)
-    private UUID gearListingId;
-
-    @NotNull
-    @Column(name = "buyer_id", nullable = false)
-    private UUID buyerId;
-
-    @Column(name = "gear_alert_id")
-    private UUID gearAlertId;
-
-    @NotNull
-    @Column(name = "agreed_price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal agreedPrice;
-
-    @Size(max = 20)
     @NotNull
     @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(name = "status", nullable = false, length = 20)
-    private TransactionStatus status;
+    private AlertStatus status;
+
+    @NotNull
+    @Column(name = "min_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal minPrice;
+
+    @NotNull
+    @Column(name = "max_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal maxPrice;
 
     @NotNull
     @Column(name = "created_by", nullable = false)
@@ -78,28 +70,35 @@ public class GearTransaction {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    GearTransaction(UUID id, UUID gearId,
-                    UUID sellerId, UUID gearListingId,
-                    UUID buyerId, UUID gearAlertId,
-                    BigDecimal agreedPrice, TransactionStatus status,
-                    UUID createdBy, OffsetDateTime createdAt,
-                    UUID updatedBy, OffsetDateTime updatedAt) {
+//    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+//    @JoinColumn(name = "gear_id", insertable = false, updatable = false)
+//    private Gear gear;
+
+    GearAlert(UUID id, UUID gearId, String title, AlertStatus status,
+              BigDecimal minPrice, BigDecimal maxPrice,
+              UUID createdBy, OffsetDateTime createdAt,
+              UUID updatedBy, OffsetDateTime updatedAt) {
         this.id = id;
         this.gearId = gearId;
-        this.sellerId = sellerId;
-        this.gearListingId = gearListingId;
-        this.buyerId = buyerId;
-        this.gearAlertId = gearAlertId;
-        this.agreedPrice = agreedPrice;
+        this.title = title;
         this.status = status;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
     }
 
-    GearTransaction update(UpdateTransactionDto dto) {
-        if (dto.status()!=getStatus()) setStatus(dto.status());
+    GearAlert update(UpdateAlertDto updateAlertDto) {
+        if (updateAlertDto.title()!=null && !updateAlertDto.title().isEmpty())
+            setTitle(updateAlertDto.title());
+        if (updateAlertDto.minPrice()!=null)
+            setMinPrice(updateAlertDto.minPrice());
+        if (updateAlertDto.maxPrice()!=null)
+            setMaxPrice(updateAlertDto.maxPrice());
+        if (updateAlertDto.status()!=null)
+            setStatus(updateAlertDto.status());
         return this;
     }
 
@@ -108,12 +107,7 @@ public class GearTransaction {
         setUpdatedAt(OffsetDateTime.now());
     }
 
-    enum TransactionStatus {
-        INITIATED, PAYED, SENT, ARRIVED
+    enum AlertStatus {
+        ACTIVE, FOUND, SOLD, CANCELLED
     }
-
-    enum USERTYPE {
-        BUYER, SELLER, ALL
-    }
-
 }

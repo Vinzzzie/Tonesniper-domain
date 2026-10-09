@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.alert;
+package io.tonesniper.domain.alert;
 
 import io.tonesniper.domain.NotFoundException;
 import io.tonesniper.domain.NotInsertedException;

@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.ownership;
+package io.tonesniper.domain.ownership;
 
 import io.tonesniper.domain.gear.Gear;
 

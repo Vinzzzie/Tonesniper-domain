@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.alert;
+package io.tonesniper.domain.alert;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

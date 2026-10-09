@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.alert;
+package io.tonesniper.domain.alert;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface AlertRepo extends JpaRepository<GearAlert, UUID> {
     @Query("""
-        SELECT new io.tonesniper.domain.gear.alert.GearAlertDto(
+        SELECT new io.tonesniper.domain.alert.GearAlertDto(
             ga.id, g, ga.title, ga.minPrice, ga.maxPrice, ga.status)
         FROM GearAlert ga JOIN Gear g ON ga.gearId = g.id
         WHERE ga.createdBy = :createdBy""")

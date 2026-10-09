@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.transaction;
+package io.tonesniper.domain.transaction;
 
 public record UpdateTransactionDto(
     String transactionId,

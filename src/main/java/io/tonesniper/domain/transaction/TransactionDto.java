@@ -1,4 +1,4 @@
-package io.tonesniper.domain.gear.transaction;
+package io.tonesniper.domain.transaction;
 
 import io.tonesniper.domain.gear.Gear;
 import io.tonesniper.domain.gear.GearDto;
