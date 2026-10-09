@@ -18,7 +18,9 @@ import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -80,5 +82,15 @@ public class Gear {
         AMPLIFIER,
         GUITAR,
         SYNTH
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("brand", brand);
+        map.put("model", model);
+        map.put("category", category);
+        map.put("knobs", knobs);
+        return map;
     }
 }
