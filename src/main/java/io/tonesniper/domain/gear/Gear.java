@@ -84,13 +84,21 @@ public class Gear {
         SYNTH
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            "category=" + category +
+            ", brand='" + brand + '\'' +
+            ", model='" + model + '\'' +
+            '}';
+    }
+
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("brand", brand);
-        map.put("model", model);
-        map.put("category", category);
-        map.put("knobs", knobs);
+        map.put("id", id==null?null:id.toString());
+        map.put("knobs", knobs==null?"":knobs.toString());
+        map.put("createdAt", createdAt==null?"":createdAt.toString());
+        map.put("updatedAt", updatedAt==null?"":updatedAt.toString());
         return map;
     }
 }

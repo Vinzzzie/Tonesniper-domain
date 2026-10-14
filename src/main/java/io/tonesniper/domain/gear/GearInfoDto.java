@@ -17,4 +17,10 @@ public record GearInfoDto (
             OffsetDateTime.now(), OffsetDateTime.now()
         );
     }
+    public boolean hasNoNullValue() {
+        return !(brand == null || model == null || category == null || knobs == null);
+    }
+    public boolean notExistsInRepo(GearRepo gearRepo) {
+        return !gearRepo.existsByBrandIgnoreCaseAndModelIgnoreCase(brand, model);
+    }
 }
